@@ -68,9 +68,9 @@ static int intersectsAtTime(double time)
     double meteor_x = meteor_x0 + meteor_v_x * time;
     double meteor_y = meteor_y0 + meteor_v_y * time;
     
-    // Check that it is on the screen
-    if (artillery_y > 1.0 || artillery_y < 0.0 || artillery_x < 0.0 || artillery_x > 1.0
-        || meteor_y > 1.0 || meteor_y < 0.0 || meteor_x > 1.0 || meteor_x < 0.0)
+    // Check that it is above the ground
+    if (artillery_y < 0.0
+       || meteor_y < 0.0)
         return 0;
 
     // Calculate the distance
@@ -79,7 +79,7 @@ static int intersectsAtTime(double time)
     double r2 = dX*dX + dY*dY;
     
     // check the the threshold for distance
-    return r2 < 0.0000001;
+    return r2 < 0.000001;
 }
 
 static double timeOfFoo(double p0, double velocity)
@@ -108,6 +108,7 @@ static double timeOfFoo(double p0, double velocity)
 
 - (void) applicationWillFinishLaunching:(NSNotification*)notification
 {
+    // Load the graphics part of the system
 	[visView loadCompositionFromFile:
 	 [[NSBundle mainBundle] pathForResource:@"Meteor Defense"
                                      ofType:@"qtz"]];
@@ -163,8 +164,7 @@ static double timeOfFoo(double p0, double velocity)
     if (hasIntercept)
     {
         // The velocity is so that we reach the intercept point  at time of 1
-        timeRescale = 1.0/tx;
-        timeRescale /= 4.0;
+        timeRescale = tx;
     }
     else
     {
@@ -180,9 +180,8 @@ static double timeOfFoo(double p0, double velocity)
             minT = time_artillery_x;
         if (minT < 0.0 || (time_artillery_y >0.0 && time_artillery_y < minT))
             minT = time_artillery_y;
-        if (minT < 0.5) minT = 0.5;
-        timeRescale = 1.0/minT;
-        timeRescale /= 3.0;
+        if (minT < 0.1) minT = 0.1;
+        timeRescale = minT;
     }
     // Rescale the velocity
     meteor_v_x *= timeRescale;
