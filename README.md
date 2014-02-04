@@ -76,7 +76,7 @@ So let's pick a time such as t=0.5 and intercept the meteor there.
 2. Calculate the vector from artillery starting point to where the meteor will be
 3. Divide that t=0.5.  Why do we have to do this?  The vector says how far (and which direction) the artillery has to go, but not how long.   So we need to divide it by the amount of time it has to get there.
 
-I'm not going to get explicit steps how to make this algebra, nor am I going to give explicit steps on how to code it.
+I'm not going to give explicit steps how to make this algebra, nor am I going to give explicit steps on how to code it.
 That's _your_ job.
 
 
